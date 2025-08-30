@@ -16,6 +16,8 @@ export const loginUser = createAsyncThunk(
   'user/loginInfo',
   async (loginUserInfo: TLoginData) => {
     const loginInfo = await loginUserApi(loginUserInfo);
+    localStorage.setItem('refreshToken', loginInfo.refreshToken);
+    setCookie('accessToken', loginInfo.accessToken);
     return loginInfo;
   }
 );
@@ -24,6 +26,8 @@ export const registerUser = createAsyncThunk(
   'user/registerInfo',
   async (registerUserInfo: TRegisterData) => {
     const registerInfo = await registerUserApi(registerUserInfo);
+    localStorage.setItem('refreshToken', registerInfo.refreshToken);
+    setCookie('accessToken', registerInfo.accessToken);
     return registerInfo;
   }
 );
@@ -38,6 +42,8 @@ export const updateUser = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk('user/logoutAccount', async () => {
   const logout = await logoutApi();
+  localStorage.removeItem('refreshToken');
+  deleteCookie('accessToken');
   return logout;
 });
 
@@ -48,13 +54,17 @@ type TUserState = {
   isAuthChecked: boolean;
   loading: boolean;
   error: string | null | undefined;
+  refreshToken: string | null;
+  accessToken: string | null;
 };
 
 const initialState: TUserState = {
   user: null,
   isAuthChecked: false,
   loading: false,
-  error: null
+  error: null,
+  refreshToken: null,
+  accessToken: null
 };
 
 export const userSlice = createSlice({
@@ -70,8 +80,8 @@ export const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
-        setCookie('accessToken', action.payload.accessToken);
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
+        state.accessToken = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
         state.isAuthChecked = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -85,8 +95,8 @@ export const userSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
-        setCookie('accessToken', action.payload.accessToken);
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
+        state.accessToken = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
         state.isAuthChecked = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -112,8 +122,8 @@ export const userSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state) => {
         state.loading = false;
         state.user = null;
-        deleteCookie('accessToken');
-        localStorage.removeItem('refreshToken');
+        state.accessToken = null;
+        state.refreshToken = null;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;

@@ -1,9 +1,12 @@
 .wrap {
-  margin: 0 auto;
+  margin: auto;
   width: 640px;
 }
+
 .number {
   text-align: center;
+  font-family: 'Iceland';
+  font-size: '30px';
 }
 
 .status {

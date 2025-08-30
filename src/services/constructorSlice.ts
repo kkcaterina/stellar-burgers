@@ -29,9 +29,12 @@ export const constructorSlice = createSlice({
       }
     },
     deleteIngredient: (state, action: PayloadAction<string>) => {
-      state.ingredients = state.ingredients.filter(
-        (ing) => ing._id !== action.payload
+      const index = state.ingredients.findIndex(
+        (ing) => ing.id === action.payload
       );
+      if (index !== -1) {
+        state.ingredients.splice(index, 1);
+      }
     },
     deleteIngredients: (state) => {
       state.ingredients = initialState.ingredients;
