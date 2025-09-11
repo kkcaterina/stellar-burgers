@@ -207,7 +207,10 @@ const config: JestConfigWithTsJest = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
-  preset: 'ts-jest'
+  preset: 'ts-jest',
+  moduleNameMapper: {
+    '^@api$': '<rootDir>/src/utils/burger-api.ts'
+  }
 };
 
-// export default config;
+export default config;
