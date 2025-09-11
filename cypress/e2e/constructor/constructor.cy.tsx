@@ -7,7 +7,7 @@ describe('Проверяем доступность приложения', funct
 describe('Проверяем работоспособность страницы конструктора бургера', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/api/ingredients', {
-      fixture: 'ingredients.json'
+      fixture: 'ingredientsResponse.json'
     }).as('getIngredients');
     cy.visit('/');
   });
@@ -81,6 +81,33 @@ describe('Проверяем работоспособность страницы
         'Флюоресцентная булка R2-D3'
       );
     });
-    it('Тестируем оформление заказа', () => {});
+    it('Тестируем оформление заказа', () => {
+      cy.intercept('GET', 'api/auth/user', {
+        fixture: 'userData.json'
+      }).as('getUser');
+      cy.intercept('POST', 'api/orders', {
+        fixture: 'orderResponse.json'
+      }).as('createOrder');
+      cy.visit('/');
+      cy.wait('@getUser');
+
+      cy.get('@purpleBun').contains('Добавить').click();
+      cy.get('@saladMain').contains('Добавить').click();
+      cy.get('@cheeseMain').contains('Добавить').click();
+      cy.get('@ringsMain').contains('Добавить').click();
+      cy.get('@spaceSauce').contains('Добавить').click();
+      cy.get('@galacticSauce').contains('Добавить').click();
+      cy.get('@ringsMain').contains('Добавить').click();
+      cy.get('@spaceSauce').contains('Добавить').click();
+
+      cy.get('[data-cy="createOrderButton"]').click();
+      cy.wait('@createOrder');
+      cy.get('[data-cy="orderDetails"]').should('contain', '88585');
+      cy.get('[data-cy="closeModalButton"]').click();
+      cy.get('[data-cy="modal"]').should('not.exist');
+
+      cy.contains('Выберите булки').should('be.visible');
+      cy.contains('Выберите начинку').should('be.visible');
+    });
   });
 });

@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YTE3MmJkNjczMDg2MDAxYmE4MzNjYiIsImlhdCI6MTc1NzYxMjMwMSwiZXhwIjoxNzU3NjEzNTAxfQ.rGQnJgs8QM1dY8b3ppxH4c4H__MkDFWKuEwZPp3NONs",
+  "refreshToken": "27cea98b5aca2306a4e17c3c1c66c7f4803b4b7e108e135500434db4c5948555520541ad51aaa7b5",
+  "user": {
+      "email": "sss555@mail.ru",
+      "name": "Matvey"
+  }
+}
