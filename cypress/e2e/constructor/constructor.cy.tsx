@@ -10,20 +10,41 @@ describe('Проверяем работоспособность страницы
       fixture: 'ingredients.json'
     }).as('getIngredients');
     cy.visit('/');
-    cy.wait('@getIngredients');
-    cy.get('[data-cy="643d69a5c3f7b9001cfa093d"]').as('purpleBun');
-    cy.get('[data-cy="643d69a5c3f7b9001cfa0949"]').as('saladMain');
-    cy.get('[data-cy="643d69a5c3f7b9001cfa094a"]').as('cheeseMain');
-    cy.get('[data-cy="643d69a5c3f7b9001cfa0946"]').as('ringsMain');
-    cy.get('[data-cy="643d69a5c3f7b9001cfa0943"]').as('spaceSauce');
-    cy.get('[data-cy="643d69a5c3f7b9001cfa0944"]').as('galacticSauce');
   });
   describe('Проверяем модальное окно ингредиента', () => {
-    it('Тестируем открытие модального окна ингредиента и сверяем данные ингредиента', () => {});
-    it('Тестируем закрытие модального окна ингредиента при клике на кнопку закрытия', () => {});
-    it('Тестируем закрытие модального окна ингредиента при клике на оверлей', () => {});
+    beforeEach(() => {
+      cy.get('[data-cy="/ingredients/643d69a5c3f7b9001cfa093d"]').as(
+        'ingredient'
+      );
+    });
+    it('Тестируем открытие модального окна ингредиента и сверяем данные ингредиента', () => {
+      cy.get('@ingredient').click();
+      cy.get('[data-cy="modal"]').should(
+        'contain.text',
+        'Флюоресцентная булка R2-D3'
+      );
+    });
+    it('Тестируем закрытие модального окна ингредиента при клике на кнопку закрытия', () => {
+      cy.get('@ingredient').click();
+      cy.get('[data-cy="closeModalButton"]').click();
+      cy.get('[data-cy="modal"]').should('not.exist');
+    });
+    it('Тестируем закрытие модального окна ингредиента при клике на оверлей', () => {
+      cy.get('@ingredient').click();
+      cy.get('[data-cy="overlay"]').click({ force: true });
+      cy.get('[data-cy="modal"]').should('not.exist');
+    });
   });
-  describe('Проверяем добавление ингредиента из списка ингредиентов в конструктор и создание заказа', () => {
+  describe('Проверяем добавление ингредиентов из списка ингредиентов в конструктор и создание заказа', () => {
+    beforeEach(() => {
+      cy.wait('@getIngredients');
+      cy.get('[data-cy="643d69a5c3f7b9001cfa093d"]').as('purpleBun');
+      cy.get('[data-cy="643d69a5c3f7b9001cfa0949"]').as('saladMain');
+      cy.get('[data-cy="643d69a5c3f7b9001cfa094a"]').as('cheeseMain');
+      cy.get('[data-cy="643d69a5c3f7b9001cfa0946"]').as('ringsMain');
+      cy.get('[data-cy="643d69a5c3f7b9001cfa0943"]').as('spaceSauce');
+      cy.get('[data-cy="643d69a5c3f7b9001cfa0944"]').as('galacticSauce');
+    });
     it('Тестируем возможность добавления ингредиента в конструктор', () => {
       cy.get('@purpleBun').contains('Добавить').click();
       cy.get('@saladMain').contains('Добавить').click();
