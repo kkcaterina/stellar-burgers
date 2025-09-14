@@ -40,7 +40,7 @@ type OrderState = {
   error: string | null | undefined;
 };
 
-const initialState: OrderState = {
+export const initialState: OrderState = {
   userOrders: null,
   orderByNumber: null,
   orderResponse: null,
