@@ -164,7 +164,7 @@ describe('Проверяем асинхронные запросы orderSlice', 
   });
 });
 
-describe('Проверяем работу редьюсера resetOrder', () => {
+describe('Проверяем работу редьюсера resetOrder в orderSlice', () => {
   test('Тестируем сброс orderResponse', () => {
     const stateWithOrder = {
       userOrders: null,
