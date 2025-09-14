@@ -58,7 +58,7 @@ type TUserState = {
   accessToken: string | null;
 };
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   user: null,
   isAuthChecked: false,
   loading: false,
@@ -134,7 +134,7 @@ export const userSlice = createSlice({
       })
       .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || null;
+        state.error = action.error.message;
         state.isAuthChecked = true;
       })
       .addCase(getUser.fulfilled, (state, action) => {
